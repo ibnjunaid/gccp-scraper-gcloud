@@ -1,6 +1,4 @@
 import functions from '@google-cloud/functions-framework';
-
-
 import { revalidateDashboard, saveLatestDataToSheet, SyncParticipantsData } from './Runner';
 
 export type Params = {
@@ -15,22 +13,24 @@ export type Params = {
 export async function handler(event: functions.CloudEvent<any>, context: any) {
     // process.env.CRED = JSON.stringify(params.CRED);
     // process.env.TOKEN = JSON.stringify(params.TOKEN);
-    console.log(event.data)
 
-    const message = event.data
-        ? Buffer.from(event.data, 'base64').toString()
-        : 'Hello, World';
-    console.log(message);
 
-    // const { sheetId } = params;
-    // const data = await SyncParticipantsData(sheetId);
-    // const status = await saveLatestDataToSheet(data, sheetId);
-    // const res = await revalidateDashboard({
-    //     path: params.instituteId,
-    //     secret: params.TOKEN
-    // }).catch((err) => {
-    //     console.log(JSON.stringify(err))
-    // });
+    const message: Params = event.data
+        ? JSON.parse(Buffer.from(event.data, 'base64').toString())
+        : null;
+    if (message === null) {
+        throw new Error("Invalid message")
+    }
+
+    const { sheetId } = message;
+    const data = await SyncParticipantsData(sheetId);
+    const status = await saveLatestDataToSheet(data, sheetId);
+    const res = await revalidateDashboard({
+        path: message.instituteId,
+        secret: message.TOKEN
+    }).catch((err) => {
+        console.log(JSON.stringify(err))
+    });
     return { status: 'status' };
 }
 
