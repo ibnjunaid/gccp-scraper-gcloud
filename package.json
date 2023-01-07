@@ -4,7 +4,7 @@
   "description": "Backend server for gcptrack",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && cp package.json dist",
+    "build": "tsc && cp package.json build",
     "test": "npm test",
     "dev": "nodemon src/index.ts",
     "start": "build/index.js"
