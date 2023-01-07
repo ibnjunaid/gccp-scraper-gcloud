@@ -76,9 +76,12 @@ async function Runner(params: Params) {
     const data = await SyncParticipantsData(sheetId);
     const status = await saveLatestDataToSheet(data, sheetId);
     console.log(`Data save status: ${status}`)
+    if (!process.env.TOKEN) {
+        throw new Error("Next.js TOKEN missing")
+    }
     const res = await revalidateDashboard({
         path: params.instituteId,
-        secret: params.TOKEN
+        secret: process.env.TOKEN
     }).catch((err) => {
         console.log(JSON.stringify(err))
     });
