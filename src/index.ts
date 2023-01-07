@@ -1,5 +1,6 @@
 import functions from '@google-cloud/functions-framework';
 import { revalidateDashboard, saveLatestDataToSheet, SyncParticipantsData } from './Runner';
+import logger from './utils/logger';
 
 export type Params = {
     sheetId: string,
@@ -29,7 +30,7 @@ export async function handler(event: functions.CloudEvent<any>, context: any) {
         path: message.instituteId,
         secret: message.TOKEN
     }).catch((err) => {
-        console.log(JSON.stringify(err))
+        logger.error(JSON.stringify(err))
     });
     return { status: 'status' };
 }

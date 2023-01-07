@@ -28,7 +28,6 @@ export async function SyncParticipantsData(sheetId: string) {
     logger.info(`Data sync started on ${Date().toString()}`)
 
     for await (let d of data) {
-        console.log(d)
         if (d['Enrolment Status'] === 'All Good' && d['Google Cloud Skills Boost Profile URL']) {
             await sleep(50);
             const b = await getBadgesFromURL(d['Google Cloud Skills Boost Profile URL'])

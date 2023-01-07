@@ -3,7 +3,7 @@ export function sleep(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-export function generateSheetTitle(): string{
+export function generateSheetTitle(): string {
     const date = new Date();
     return date.toDateString()
 }
