@@ -1,0 +1,10 @@
+steps:
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+  dir: '/'
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['build']
+  dir: '/'
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['functions', 'deploy', 'us-central1', '--trigger-topic=data_sync_topic', '--trigger-event=google.pubsub.topic.publish','--runtime', 'nodejs16', '--entry-point', 'handler']
+  dir: '/build/'
