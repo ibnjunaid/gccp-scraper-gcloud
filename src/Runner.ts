@@ -71,12 +71,11 @@ export async function revalidateDashboard(params: revalidateArgs) {
   *
 */
 async function Runner(params: Params) {
-    process.env.CRED = JSON.stringify(params.CRED);
-    process.env.TOKEN = JSON.stringify(params.TOKEN);
 
     const { sheetId } = params;
     const data = await SyncParticipantsData(sheetId);
     const status = await saveLatestDataToSheet(data, sheetId);
+    console.log(`Data save status: ${status}`)
     const res = await revalidateDashboard({
         path: params.instituteId,
         secret: params.TOKEN
