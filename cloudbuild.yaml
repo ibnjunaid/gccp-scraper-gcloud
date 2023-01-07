@@ -8,7 +8,7 @@ steps:
   args: ['install']
 - name: node:16
   entrypoint: npm
-  args: ['build']
+  args: ['run','build']
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['functions', 'deploy', 'function-001', '--trigger-topic=data_sync_topic', '--trigger-event=google.pubsub.topic.publish','--runtime', 'nodejs16', '--entry-point', 'handler']
   dir: 'build'
