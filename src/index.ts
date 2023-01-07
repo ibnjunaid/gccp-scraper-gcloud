@@ -26,9 +26,12 @@ export async function handler(event: functions.CloudEvent<any>, context: any) {
     const { sheetId } = message;
     const data = await SyncParticipantsData(sheetId);
     const status = await saveLatestDataToSheet(data, sheetId);
+    if (!process.env.TOKEN) {
+        throw new Error("Next.js TOKEN missing")
+    }
     const res = await revalidateDashboard({
         path: message.instituteId,
-        secret: message.TOKEN
+        secret: process.env.TOKEN
     }).catch((err) => {
         logger.error(JSON.stringify(err))
     });
